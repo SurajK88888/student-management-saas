@@ -22,7 +22,7 @@ app.get("/students", (req, res) => {
 
 //endpoint // API
 app.post("/students", (req, res) => {
-  const student = req.body;
+  const student = { id: Date.now().toString(), info: req.body };
 
   students.push(student);
 
@@ -32,6 +32,23 @@ app.post("/students", (req, res) => {
   });
 });
 
+// endpoint // API
+app.delete("/students/:id", (req, res) => {
+  const { id } = req.params;
+
+  const initialLength = students.length;
+  students = students.filter((student) => student.id !== id);
+
+  if (students.length === initialLength) {
+    return res.status(404).json({
+      message: "Student not found.",
+    });
+  }
+
+  res.json({
+    message: "Student deleted successfully.",
+  });
+});
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
