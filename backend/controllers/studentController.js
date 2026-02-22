@@ -1,7 +1,21 @@
 let students = [];
 
 export function createStudent(req, res) {
-  const student = { id: Date.now().toString(), ...req.body };
+  const { name, rollNumber, email, course } = req.body;
+
+  if (!name || !rollNumber || !email || !course) {
+    return res.status(404).json({
+      message: "All field are required: name, rollNumber, email, course",
+    });
+  }
+
+  const student = {
+    id: Date.now().toString(),
+    name: name,
+    rollNumber: rollNumber,
+    email: email,
+    course: course,
+  };
 
   students.push(student);
 
