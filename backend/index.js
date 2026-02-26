@@ -1,9 +1,14 @@
 import express from "express";
 import studentRoutes from "./routes/studentRoutes.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+
+dotenv.config();
+connectDB(); 
 
 const app = express();
-const PORT = 5000;
-let students = [];
+const PORT = process.env.PORT ||5000;
 
 // This is a middleware to parse json to js object and attach data to req.body
 app.use(express.json());
@@ -60,7 +65,11 @@ app.use(express.json());
 //   });
 // });
 
+// For all the request on starting with "/students"
 app.use("/students", studentRoutes);
+
+// For centeralized error handling
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
