@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Student from "../models/Student.js";
 let students = [];
 
@@ -32,12 +33,52 @@ export async function createStudent(req, res, next) {
   }
 }
 
-export async function getStudents(req, res) {
-  const students = await Student.find();
-
-  res.json(students);
+export async function getStudents(req, res, next) {
+  try {
+    const students = await mongoose.find();
+    if (!students) {
+      const error = new Error("Students List not found!");
+      error.statusCode = 404;
+      return next(error);
+    }
+    res.json(students);
+  } catch (error) {
+    next(error);
+  }
 }
 
+export async function getStudentByID(req, res, next) {
+  try {
+    const student = await Student.findById(req.params.id);
+
+    if (!student) {
+      const error = new Error("Invalid ID, Student not found!");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    res.json(student);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export async function updateStudent(req, res) {
+  try {
+    const student = await mongoose.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!student) {
+      const error = new Error("Student not found!");
+      error.statusCode = 404;
+      return next(error);
+    }
+    res.json(student);
+  } catch (error) {
+    next(error);
+  }
+}
 export async function deleteStudent(req, res, next) {
   const { id } = req.params;
 
