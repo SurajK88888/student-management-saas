@@ -1,8 +1,9 @@
 import Student from "../models/Student.js";
+import apiResponse from "../utils/apiresponse.js";
 
 export async function createStudent(req, res, next) {
   const { name, rollNumber, email, course } = req.body;
- 
+
   try {
     if (!name || !rollNumber || !email || !course) {
       // Validation error handling using next(error) -> errorMiddleware
@@ -26,7 +27,8 @@ export async function createStudent(req, res, next) {
       course,
     });
 
-    res.status(201).json(student);
+    // res.status(201).json(student);
+    apiResponse(res, 201, "Student Created Successfully", student);
   } catch (error) {
     next(error);
   }
@@ -40,7 +42,8 @@ export async function getStudents(req, res, next) {
       error.statusCode = 404;
       return next(error);
     }
-    res.json(students);
+    // res.json(students);
+    apiResponse(res, 200, "Students list accessed successfully", students);
   } catch (error) {
     next(error);
   }
@@ -56,7 +59,8 @@ export async function getStudentByID(req, res, next) {
       return next(error);
     }
 
-    res.json(student);
+    // res.json(student);
+    apiResponse(res, 200, "Student Found", student);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -73,7 +77,8 @@ export async function updateStudent(req, res, next) {
       error.statusCode = 404;
       return next(error);
     }
-    res.json(student);
+    // res.json(student);
+    apiResponse(res, 200, "Student data updated successfully", student);
   } catch (error) {
     next(error);
   }
@@ -91,7 +96,8 @@ export async function deleteStudent(req, res, next) {
       return next(error);
     }
 
-    res.json({ message: "Student deleted successfully" });
+    // res.json({ message: "Student deleted successfully" });
+    apiResponse(res, 200, "Student deleted successfully");
   } catch (error) {
     next(error);
   }
