@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
 import Student from "../models/Student.js";
-let students = [];
 
 export async function createStudent(req, res, next) {
   const { name, rollNumber, email, course } = req.body;
+ 
   try {
     if (!name || !rollNumber || !email || !course) {
       // Validation error handling using next(error) -> errorMiddleware
@@ -35,7 +34,7 @@ export async function createStudent(req, res, next) {
 
 export async function getStudents(req, res, next) {
   try {
-    const students = await mongoose.find();
+    const students = await Student.find();
     if (!students) {
       const error = new Error("Students List not found!");
       error.statusCode = 404;
@@ -63,9 +62,9 @@ export async function getStudentByID(req, res, next) {
   }
 }
 
-export async function updateStudent(req, res) {
+export async function updateStudent(req, res, next) {
   try {
-    const student = await mongoose.findByIdAndUpdate(req.params.id, req.body, {
+    const student = await Student.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -79,6 +78,7 @@ export async function updateStudent(req, res) {
     next(error);
   }
 }
+
 export async function deleteStudent(req, res, next) {
   const { id } = req.params;
 

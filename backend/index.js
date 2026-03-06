@@ -5,10 +5,10 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 
 dotenv.config();
-connectDB(); 
+connectDB();
 
 const app = express();
-const PORT = process.env.PORT ||5000;
+const PORT = process.env.PORT || 5000;
 
 // This is a middleware to parse json to js object and attach data to req.body
 app.use(express.json());
@@ -74,3 +74,17 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// Important Backend Concept
+
+// Middleware flow in Express.js
+
+// Request
+//    ↓
+// Routes
+//    ↓
+// Controller
+//    ↓
+// Error Middleware
+//    ↓
+// Response

@@ -7,3 +7,17 @@ export function errorHandler(err, req, res, next) {
     message: err.message || "Internal Server Error",
   });
 }
+
+// Important Backend Concept
+
+// Middleware flow in Express.js
+
+// Request
+//    ↓
+// Routes
+//    ↓
+// Controller
+//    ↓
+// Error Middleware
+//    ↓
+// Response
