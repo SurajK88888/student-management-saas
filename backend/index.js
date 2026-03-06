@@ -1,4 +1,5 @@
 import express from "express";
+import authRoutes from "./routes/authRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 import dotenv from "dotenv";
@@ -66,6 +67,7 @@ app.use(express.json());
 // });
 
 // For all the request on starting with "/students"
+app.use("/api/auth", authRoutes);
 app.use("/students", studentRoutes);
 
 // For centeralized error handling
