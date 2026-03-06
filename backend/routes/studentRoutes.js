@@ -1,4 +1,5 @@
 import express from "express";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 import {
   createStudent,
@@ -10,11 +11,11 @@ import {
 
 const router = express.Router();
 
-router.post("/", createStudent);
-router.get("/", getStudents);
-router.get("/:id", getStudentByID);
-router.put("/:id", updateStudent);
-router.delete("/:id", deleteStudent);
+router.post("/", authMiddleware, createStudent);
+router.get("/", authMiddleware, getStudents);
+router.get("/:id", authMiddleware, getStudentByID);
+router.put("/:id", authMiddleware, updateStudent);
+router.delete("/:id", authMiddleware, deleteStudent);
 
 export default router;
 // module.exports = router;
