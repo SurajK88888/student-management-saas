@@ -32,4 +32,7 @@ const studentSchema = new mongoose.Schema(
   },
 );
 
+// Add Compound Index
+studentSchema.index({ email: 1, user: 1 }, { unique: true });
+
 export default mongoose.model("Student", studentSchema);
