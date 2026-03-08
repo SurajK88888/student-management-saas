@@ -25,6 +25,7 @@ export async function createStudent(req, res, next) {
       rollNumber,
       email,
       course,
+      user: req.user.id,
     });
 
     // res.status(201).json(student);
@@ -36,7 +37,7 @@ export async function createStudent(req, res, next) {
 
 export async function getStudents(req, res, next) {
   try {
-    const students = await Student.find();
+    const students = await Student.find({ user: req.user.id });
     if (!students) {
       const error = new Error("Students List not found!");
       error.statusCode = 404;
