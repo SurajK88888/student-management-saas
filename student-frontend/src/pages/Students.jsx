@@ -89,20 +89,24 @@ function Students() {
   };
 
   if (loading) {
-    return <p>Loading students...</p>;
+    return <p className="p-10 text-center">Loading students...</p>;
   }
 
   return (
-    <div>
-      <h2>{editId ? "Edit Student" : "Add Student"}</h2>
+    <div className="max-w-5xl mx-auto p-10">
+      <h1 className="text-3xl font-bold mb-6">Student Management</h1>
+      <h3 className="text-1xl font-bold mb-6">
+        {editId ? "Edit Student" : "Add Student"}
+      </h3>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 mb-10">
         <input
           type="text"
           name="name"
           placeholder="Name"
           value={formData.name}
           onChange={handleChange}
+          className="border p-2 rounded"
           required
         />
 
@@ -112,6 +116,7 @@ function Students() {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+          className="border p-2 rounded"
           required
         />
 
@@ -121,6 +126,7 @@ function Students() {
           placeholder="Roll Number"
           value={formData.rollNumber}
           onChange={handleChange}
+          className="border p-2 rounded"
           required
         />
 
@@ -130,37 +136,51 @@ function Students() {
           placeholder="Course"
           value={formData.course}
           onChange={handleChange}
+          className="border p-2 rounded"
           required
         />
 
-        <button type="submit">
+        <button
+          type="submit"
+          className="col-span-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        >
           {editId ? "Update Student" : "Add Student"}
         </button>
       </form>
 
-      <h2>Student Dashboard</h2>
+      <h2 className="bg-gray-200 m-2 p-2 text-black rounded font-bold">
+        Student Dashboard
+      </h2>
 
-      <table border="1" cellPadding="10">
-        <thead>
+      <table border="1" cellPadding="10" className="w-full border">
+        <thead className="bg-gray-100">
           <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Roll Number</th>
-            <th>Course</th>
-            <th>Actions</th>
+            <th className="p-3 border">Name</th>
+            <th className="p-3 border">Email</th>
+            <th className="p-3 border">Roll Number</th>
+            <th className="p-3 border">Course</th>
+            <th className="p-3 border">Actions</th>
           </tr>
         </thead>
 
         <tbody>
           {students.map((student) => (
             <tr key={student._id}>
-              <td>{student.name}</td>
-              <td>{student.email}</td>
-              <td>{student.rollNumber}</td>
-              <td>{student.course}</td>
-              <td>
-                <button onClick={() => handleEdit(student)}>Edit</button>
-                <button onClick={() => handleDelete(student._id)}>
+              <td className="border p-2">{student.name}</td>
+              <td className="border p-2">{student.email}</td>
+              <td className="border p-2">{student.rollNumber}</td>
+              <td className="border p-2">{student.course}</td>
+              <td className="border p-2 space-x-2">
+                <button
+                  onClick={() => handleEdit(student)}
+                  className="bg-yellow-400 px-3 py-1 rounded"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(student._id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded"
+                >
                   Delete
                 </button>
               </td>
