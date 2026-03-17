@@ -2,7 +2,7 @@ import Student from "../models/Student.js";
 import apiResponse from "../utils/apiresponse.js";
 
 export async function createStudent(req, res, next) {
-  const { name, rollNumber, email, course } = req.body;
+  const { name, email, rollNumber, course } = req.body;
 
   try {
     if (!name || !rollNumber || !email || !course) {
