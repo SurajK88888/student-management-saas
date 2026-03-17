@@ -4,6 +4,7 @@ import api from "../services/api";
 function Students() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editId, setEditId] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -39,18 +40,30 @@ function Students() {
     e.preventDefault();
 
     try {
-      const res = await api.post("/students", formData);
+      if (editId) {
+        const res = await api.put(`/students/${editId}`, formData);
 
-      setStudents([...students, res.data]);
+        setStudents(
+          students.map((student) =>
+            student._id === editId ? res.data : student,
+          ),
+        );
 
-      setFormData({
-        name: "",
-        email: "",
-        rollNumber: "",
-        course: "",
-      });
+        setEditId(null);
+      } else {
+        const res = await api.post("/students", formData);
+
+        setStudents([...students, res.data]);
+
+        setFormData({
+          name: "",
+          email: "",
+          rollNumber: "",
+          course: "",
+        });
+      }
     } catch (error) {
-      console.error("Failed to create student");
+      console.error("Failed operation");
     }
   };
 
@@ -64,13 +77,24 @@ function Students() {
     }
   };
 
+  const handleEdit = (student) => {
+    setEditId(student._id);
+
+    setFormData({
+      name: student.name,
+      email: student.email,
+      rollNumber: student.rollNumber,
+      course: student.course,
+    });
+  };
+
   if (loading) {
     return <p>Loading students...</p>;
   }
 
   return (
     <div>
-      <h2>Add Student</h2>
+      <h2>{editId ? "Edit Student" : "Add Student"}</h2>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -109,7 +133,9 @@ function Students() {
           required
         />
 
-        <button type="submit">Add Student</button>
+        <button type="submit">
+          {editId ? "Update Student" : "Add Student"}
+        </button>
       </form>
 
       <h2>Student Dashboard</h2>
@@ -133,6 +159,7 @@ function Students() {
               <td>{student.rollNumber}</td>
               <td>{student.course}</td>
               <td>
+                <button onClick={() => handleEdit(student)}>Edit</button>
                 <button onClick={() => handleDelete(student._id)}>
                   Delete
                 </button>
