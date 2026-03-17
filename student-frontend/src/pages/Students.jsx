@@ -88,13 +88,29 @@ function Students() {
     });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+
+    window.location.href = "/login";
+  };
+
   if (loading) {
     return <p className="p-10 text-center">Loading students...</p>;
   }
 
   return (
     <div className="max-w-5xl mx-auto p-10">
-      <h1 className="text-3xl font-bold mb-6">Student Management</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Student Management</h1>
+
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded"
+        >
+          Logout
+        </button>
+      </div>
+      {/* <h1 className="text-3xl font-bold mb-6">Student Management</h1> */}
       <h3 className="text-1xl font-bold mb-6">
         {editId ? "Edit Student" : "Add Student"}
       </h3>
