@@ -9,7 +9,7 @@ function Login() {
     try {
       let data = { email, password };
       const res = await loginUser(data);
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("token", res.token);
       alert("Login Successful");
     } catch (error) {
       alert("Login failed");
