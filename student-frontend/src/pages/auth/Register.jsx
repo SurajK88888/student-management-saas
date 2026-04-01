@@ -1,57 +1,43 @@
-import { useState } from "react"
-import api from "../../services/api"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react";
+import api from "../../services/api";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Register() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
   const handleChange = (e) => {
-
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
-
-    e.preventDefault()
+    e.preventDefault();
 
     try {
+      await api.post("/auth/register", formData);
+      toast.success("Account created");
 
-      await api.post("/auth/register", formData)
-
-      navigate("/login")
-
+      navigate("/login");
     } catch (error) {
-
-      console.error("Register failed")
-
+      console.error("Register failed");
+      toast.error("Register failed");
     }
-
-  }
+  };
 
   return (
-
     <div className="max-w-md mx-auto p-10">
+      <h1 className="text-2xl font-bold mb-6">Register</h1>
 
-      <h1 className="text-2xl font-bold mb-6">
-        Register
-      </h1>
-
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
-
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           name="name"
           placeholder="Name"
@@ -78,18 +64,12 @@ function Register() {
           required
         />
 
-        <button
-          className="bg-blue-500 text-white p-2 rounded w-full"
-        >
+        <button className="bg-blue-500 text-white p-2 rounded w-full">
           Register
         </button>
-
       </form>
-
     </div>
-
-  )
-
+  );
 }
 
-export default Register
+export default Register;

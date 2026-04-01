@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 function Students() {
@@ -48,13 +49,14 @@ function Students() {
             student._id === editId ? res.data : student,
           ),
         );
+        toast.success("Student Updated");
 
         setEditId(null);
       } else {
         const res = await api.post("/students", formData);
 
         setStudents([...students, res.data]);
-
+        toast.success("Student Created");
         setFormData({
           name: "",
           email: "",
@@ -64,16 +66,23 @@ function Students() {
       }
     } catch (error) {
       console.error("Failed operation");
+      toast.error("Operation Failed");
     }
   };
 
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Delete this student?");
+
+    if (!confirmDelete) return;
+
     try {
       await api.delete(`/students/${id}`);
 
       setStudents(students.filter((student) => student._id !== id));
+      toast.success("Student deleted.")
     } catch (error) {
       console.error("Failed to delete student");
+      toast.error("Delete failed")
     }
   };
 

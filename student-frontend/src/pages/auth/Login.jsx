@@ -67,62 +67,47 @@
 // ↓
 // Attach token to API requests
 
-
-import { useState } from "react"
-import api from "../../services/api"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react";
+import api from "../../services/api";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Login() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
   const handleChange = (e) => {
-
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
-
-    e.preventDefault()
+    e.preventDefault();
 
     try {
+      const res = await api.post("/auth/login", formData);
 
-      const res = await api.post("/auth/login", formData)
+      localStorage.setItem("token", res.data.token);
+      toast.success("Login successful");
 
-      localStorage.setItem("token", res.data.token)
-
-      navigate("/students")
-
+      navigate("/students");
     } catch (error) {
-
-      console.error("Login failed")
-
+      console.error("Login failed");
+      toast.error("Invalid crendentials")
     }
-
-  }
+  };
 
   return (
-
     <div className="max-w-md mx-auto p-10">
+      <h1 className="text-2xl font-bold mb-6">Login</h1>
 
-      <h1 className="text-2xl font-bold mb-6">
-        Login
-      </h1>
-
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
-
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           name="email"
           type="email"
@@ -141,18 +126,12 @@ function Login() {
           required
         />
 
-        <button
-          className="bg-green-500 text-white p-2 rounded w-full"
-        >
+        <button className="bg-green-500 text-white p-2 rounded w-full">
           Login
         </button>
-
       </form>
-
     </div>
-
-  )
-
+  );
 }
 
-export default Login
+export default Login;
