@@ -24,7 +24,8 @@ function Students() {
 
       setStudents(res.data);
     } catch (error) {
-      console.error("Failed to fetch students");
+      // console.error("Failed to fetch students");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -79,10 +80,10 @@ function Students() {
       await api.delete(`/students/${id}`);
 
       setStudents(students.filter((student) => student._id !== id));
-      toast.success("Student deleted.")
+      toast.success("Student deleted.");
     } catch (error) {
       console.error("Failed to delete student");
-      toast.error("Delete failed")
+      toast.error("Delete failed");
     }
   };
 
